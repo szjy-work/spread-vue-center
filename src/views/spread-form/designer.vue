@@ -26,8 +26,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import { EXCELFORM_SLOT_NAMES } from '@szjy/excel-form';
-import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from './constants';
-import { emitInited, initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, requestParent, EVENT_TYPE_PARENT} from "./api";
+import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from '@/utils/constants';
+import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, requestParent} from "@/utils/iframe-io";
+import {EVENT_DESIGNER_PARENT} from '@/utils/events/designer'
 
 const excelFormRef = ref<any>(null);
 
@@ -44,7 +45,7 @@ onMounted(() => {
 
 // 初始化完毕之后，通知父组件 spreadjs 已经初始化完成
 const onInitSpreadSheet = () => {
-    emitInited().then(res=>{
+    requestParent(EVENT_DESIGNER_PARENT.Inited).then(res=>{
         console.log('get parent inited handle response', res);
     });
 }
@@ -96,13 +97,13 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
 
 // 业务相关的事件
 const onImportFormFromTpl = () => {
-    requestParent(EVENT_TYPE_PARENT.ImportFormFromTpl);
+    requestParent(EVENT_DESIGNER_PARENT.ImportFormFromTpl);
 }
 const onImportFormFromInstance = () => {
-    requestParent(EVENT_TYPE_PARENT.ImportFormFromInstance);
+    requestParent(EVENT_DESIGNER_PARENT.ImportFormFromInstance);
 }
 const onExtendFieldItems = () => {
-    requestParent(EVENT_TYPE_PARENT.ExtendFieldItems);
+    requestParent(EVENT_DESIGNER_PARENT.ExtendFieldItems);
 }
 
 onUnmounted(() => {
