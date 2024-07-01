@@ -14,6 +14,7 @@ export enum EVENT_TYPE {
     GetCellsInfo = 'getCellsInfo',
     GetFileJSON = 'getFileJSON',
     GetFieldList = 'getFieldList',
+    GetSheetConfig = 'getSheetConfig',
 }
 
 // 使用映射类型创建新的类型

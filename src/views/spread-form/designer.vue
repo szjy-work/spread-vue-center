@@ -28,7 +28,7 @@ const onInitSpreadSheet = () => {
 
 const propsMap = {
     isLandscape: {
-        get: ()=>sheetLandscape.value,
+        get: () => excelFormRef.value?.getSheetConfig('isLandscape') || false,
         set: (val: boolean) => {
             sheetLandscape.value = val;
         }
@@ -53,7 +53,7 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
     },
 
     ...initPropsGetterSetter(propsMap),
-    ...proxyFormApi(excelFormRef, ['initWithFileJSON', 'setCellsInfo', 'getCellsInfo', 'getFileJSON', 'getFieldList'])
+    ...proxyFormApi(excelFormRef, ['initWithFileJSON', 'setCellsInfo', 'getCellsInfo', 'getFileJSON', 'getFieldList', 'getSheetConfig'])
 })
 
 onUnmounted(() => {
@@ -61,6 +61,9 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
-
+<style>
+.form-designer-wrapper{
+    height: 100%;
+    background-color: white;
+}
 </style>
