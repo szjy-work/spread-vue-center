@@ -21,7 +21,8 @@ const routes: Array<RouteRecordRaw> = [
 
 const routers = [...routes, ...SpreadFormRouter];
 
-
+console.log('BASE_URL:', BASE_URL);
+console.log('routers:', routers);
 const router = createRouter({
   history: createWebHistory(BASE_URL),
   routes: routers,
