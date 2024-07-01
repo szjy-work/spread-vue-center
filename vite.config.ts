@@ -3,6 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import path from 'path'
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import Components from 'unplugin-vue-components/vite';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 
 const defaultDevApi = 'http://172.17.114.123:31736/';
 const defaultPermissionApi = 'http://172.17.114.123:31738/';
@@ -16,7 +18,14 @@ export default ({ mode }: { mode: string }) => {
 
   console.log(mode, curDevApi, env);   //变量在命令行里打印出来
   return defineConfig({
-    plugins: [vue(), vueJsx({}), UnoCSS()],
+    plugins: [
+      vue(), 
+      vueJsx({}), 
+      UnoCSS(),
+      Components({
+        resolvers: [NaiveUiResolver()],
+      })
+    ],
     define: {
       'process.env': process.env
     },
