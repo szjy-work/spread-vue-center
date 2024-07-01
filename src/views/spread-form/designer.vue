@@ -5,9 +5,9 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from './constants';
-import { apiInited, EVENT_TYPE, initIframeMessageHandlers, responseParent } from "./api";
+import { apiInited, initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter } from "./api";
 
-const excelFormRef = ref(null);
+const excelFormRef = ref<any>(null);
 
 const sheetLandscape = ref(false);
 const debugMode = ref(false);
@@ -26,6 +26,22 @@ const onInitSpreadSheet = () => {
 }
 
 
+const propsMap = {
+    isLandscape: {
+        get: ()=>sheetLandscape.value,
+        set: (val: boolean) => {
+            sheetLandscape.value = val;
+        }
+    },
+    debugMode: {
+        get: ()=>debugMode.value,
+        set: (val: boolean) => {
+            debugMode.value = val;
+        }
+    }
+}
+
+
 // 给父元素响应消息
 const onReceiveIframeMsg = initIframeMessageHandlers({
     // 处理父元素的 'hello' 消息
@@ -34,7 +50,10 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
         responseParent(port, {
             msg: "i received your params" + JSON.stringify(params)
         });
-    }
+    },
+
+    ...initPropsGetterSetter(propsMap),
+    ...proxyFormApi(excelFormRef, ['initWithFileJSON', 'setCellsInfo', 'getCellsInfo', 'getFileJSON', 'getFieldList'])
 })
 
 onUnmounted(() => {

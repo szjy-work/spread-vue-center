@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@iframe-resizer/child':
+    specifier: ^5.1.4
+    version: 5.1.4
   '@szjy/excel-form':
     specifier: ^0.2.2
     version: 0.2.2(typescript@5.5.2)
@@ -699,6 +702,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@iframe-resizer/child@5.1.4:
+    resolution: {integrity: sha512-92HKo1hWgUbk7J1zzMIxJ8R5OPhEsRIrXKOUsssK7St7b649S6Yg8EcXkX4ZmbxonVevxctrMLd0V16ysEHY9g==}
+    dev: false
 
   /@jridgewell/gen-mapping@0.3.5:
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}

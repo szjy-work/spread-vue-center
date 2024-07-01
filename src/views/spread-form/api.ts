@@ -1,8 +1,19 @@
 import { NS_SPREAD_CHILD, NS_SPREAD_PARENT } from "./constants"
+import {Capitalize} from '@/utils/string';
 
 export enum EVENT_TYPE {
-    INITED = 'inited', // 初始化完毕,
-    HELLO = 'hello'
+    Inited = 'inited', // 初始化完毕,
+    HELLO = 'hello',
+
+    // 获取 props
+    GetProps = 'getProps',
+    SetProps ='setProps',
+
+    InitWithFileJSON = 'initWithFileJSON', // 初始化时，传入文件中的 JSON 数据
+    SetCellsInfo = 'setCellsInfo',
+    GetCellsInfo = 'getCellsInfo',
+    GetFileJSON = 'getFileJSON',
+    GetFieldList = 'getFieldList',
 }
 
 // 使用映射类型创建新的类型
@@ -52,7 +63,8 @@ const requestParent = (type: EVENT_TYPE, params: any = {}, parentNs: string = NS
 
 // response 父 iframe 的消息
 export const responseParent = (port: MessagePort, payload: any = {}, childNs: string = NS_SPREAD_CHILD) => {
-    port.postMessage({ ns: childNs, payload });
+    const body = JSON.parse(JSON.stringify({ ns: childNs, payload }));
+    port.postMessage(body);
 }
 
 // 生成 iframe 父消息响应框架
@@ -61,18 +73,91 @@ export const initIframeMessageHandlers = (messageHandlers: EventTypeFn = {}, par
     const port = event.ports[0];
     const data = event.data;
     if (data?.ns === parentNs) {
-        switch (data.payload.cmd) {
-            case EVENT_TYPE.HELLO:
-                messageHandlers.onHello?.(port, data.payload.params);
-                break;
 
-            default:
-                break;
+        const cmd = data.payload.cmd;
+        if (!Object.values(EVENT_TYPE).includes(cmd)) {
+            console.log('invalid cmd:', cmd);
+            return;
+        }
+
+        // 处理父 iframe 的消息
+        const handler = messageHandlers[`on${Capitalize(cmd)}` as keyof EventTypeFn];
+
+        if (handler) {
+            handler(port, data.payload.params);
+        } else {
+            console.log('no handler for cmd:', cmd);
         }
     }
 }
 
+// 直接代理 form api
+export const proxyFormApi = (spreadVueRef: any, apiNames: string[]) => {
+    const configs: any = {};
+    apiNames.forEach(apiName => {
+        const apiNameStr = `on${Capitalize(apiName)}`;
 
+        configs[apiNameStr] = async (port: MessagePort, params: any) => {
+            const formRef = spreadVueRef.value;
+            const { args = [] } = params;
+            if (formRef && formRef[apiName]) {
+                const result = await formRef[apiName](...args);
+                try {
+                    responseParent(port, {
+                        success: true,
+                        api: apiName,
+                        args,
+                        result: result,
+                    });
+                } catch (err) {
+                    responseParent(port, {
+                        success: false,
+                        api: apiName,
+                        args,
+                        msg: 'error occurred: ' + JSON.stringify(err),
+                    });
+                }
+            } else {
+                responseParent(port, {
+                    success: false,
+                    api: apiName,
+                    msg: `${apiName} is not exist`
+                });
+            }
+        }
+    });
+    return configs;
+}
+
+export const initPropsGetterSetter = (propsMap: any) => {
+        return {
+            // 处理父元素的 'getProps' 消息
+            onGetProps: (port: MessagePort, params: any) => {
+                const { args = [] } = params;
+                const result: any = {};
+                [].concat(args).forEach(prop => {
+                    result[prop] = propsMap[prop]?.get();
+                });
+                responseParent(port, {
+                    success: true,
+                    result,
+                });
+            },
+            onSetProps: (port: MessagePort, params: any) => {
+                const { args = [] } = params;
+                [].concat(args).forEach(propSetPair => {
+                    const { name, value } = propSetPair;
+                    propsMap[name]?.set(value);
+                });
+                responseParent(port, {
+                    success: true,
+                });
+            }
+        }
+    }
+
+
+// 当 frame 刚初始化
 export const apiInited = (params: any = {}) => {
-    return requestParent(EVENT_TYPE.INITED, params);
+    return requestParent(EVENT_TYPE.Inited, params);
 }
