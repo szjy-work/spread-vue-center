@@ -15,6 +15,7 @@ export default ({ mode }: { mode: string }) => {
 
   const curDevApi = env.VITE_DEV_API_URL || defaultDevApi;  // 获取.env文件里定义的环境变量VITE_DEV_API，如果没有定义，则使用默认值
   const curPermissionApi = env.VITE_PERMISSION_API_URL || defaultPermissionApi;  // 获取.env文件里定义的环境变量VITE_PERMISSION_API，如果没有定义，则使用默认值
+  const baseUrl = env.VITE_BASE || '/';  // 获取.env文件里定义的环境变量VITE_BASE_URL，如果没有定义，则使用默认值
 
   console.log(mode, curDevApi, env);   //变量在命令行里打印出来
   return defineConfig({
@@ -26,6 +27,7 @@ export default ({ mode }: { mode: string }) => {
         resolvers: [NaiveUiResolver()],
       })
     ],
+    base: baseUrl,
     define: {
       'process.env': process.env
     },
