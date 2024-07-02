@@ -1,3 +1,4 @@
+import { removeSubArrayElements } from "../array";
 
 // 自身监听的事件类型
 export enum EVENT_DESIGNER {
@@ -14,6 +15,10 @@ export enum EVENT_DESIGNER {
     GetFieldList = 'getFieldList',
     GetSheetConfig = 'getSheetConfig',
 }
+
+
+export const PROXYED_EVENT_DESIGNER = removeSubArrayElements(Object.values(EVENT_DESIGNER), ['hello', 'getProps', 'setProps']);
+
 
 // 父 iframe 需要监听的事件类型
 export enum EVENT_DESIGNER_PARENT {

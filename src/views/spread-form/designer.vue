@@ -28,7 +28,7 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import { EXCELFORM_SLOT_NAMES } from '@szjy/excel-form';
 import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from '@/utils/constants';
 import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, requestParent} from "@/utils/iframe-io";
-import {EVENT_DESIGNER_PARENT} from '@/utils/events/designer'
+import {EVENT_DESIGNER_PARENT, PROXYED_EVENT_DESIGNER} from '@/utils/events/designer'
 
 const excelFormRef = ref<any>(null);
 
@@ -91,7 +91,7 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
     },
 
     ...initPropsGetterSetter(propsMap),
-    ...proxyFormApi(excelFormRef, ['initWithFileJSON', 'setCellsInfo', 'getCellsInfo', 'getFileJSON', 'getFieldList', 'getSheetConfig'])
+    ...proxyFormApi(excelFormRef, PROXYED_EVENT_DESIGNER)
 })
 
 

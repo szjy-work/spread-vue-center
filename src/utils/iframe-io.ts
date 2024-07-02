@@ -50,7 +50,10 @@ export const requestParent = (type: EVENT_TYPE_PARENT, params: any = {}, parentN
 
 // response 父 iframe 的消息
 export const responseParent = (port: MessagePort, payload: any = {}, childNs: string = NS_SPREAD_CHILD) => {
-    const body = JSON.parse(JSON.stringify({ ns: childNs, payload }));
+    const { keepOrigin, ...others } = payload;
+    const newPayload = keepOrigin ? others : JSON.parse(JSON.stringify(others));
+    newPayload.keepOrigin = keepOrigin;
+    const body = { ns: childNs, payload: newPayload };
     port.postMessage(body);
 }
 
@@ -86,13 +89,16 @@ export const proxyFormApi = (spreadVueRef: any, apiNames: string[]) => {
 
         configs[apiNameStr] = async (port: MessagePort, params: any) => {
             const formRef = spreadVueRef.value;
-            const { args = [] } = params;
+
+            // 如果是传送 blob 等情况，需要让 keepOrigin 为 true
+            const { args = [], keepOrigin = false } = params;
             if (formRef && formRef[apiName]) {
                 const result = await formRef[apiName](...args);
                 try {
                     responseParent(port, {
                         success: true,
                         api: apiName,
+                        keepOrigin,
                         args,
                         result: result,
                     });
@@ -100,6 +106,7 @@ export const proxyFormApi = (spreadVueRef: any, apiNames: string[]) => {
                     responseParent(port, {
                         success: false,
                         api: apiName,
+                        keepOrigin,
                         args,
                         msg: 'error occurred: ' + JSON.stringify(err),
                     });
@@ -107,6 +114,7 @@ export const proxyFormApi = (spreadVueRef: any, apiNames: string[]) => {
             } else {
                 responseParent(port, {
                     success: false,
+                    keepOrigin,
                     api: apiName,
                     msg: `${apiName} is not exist`
                 });

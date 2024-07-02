@@ -1,20 +1,20 @@
 <template>
-    <sz-form-previewer :modalWidth="modalWidth" ref="previewerRef" :isLandscape="sheetLandscape" :license-key="SPREADJS_LICENSE_KEY" :fieldItems="fieldItems" :debug-mode="debugMode" :base-url="SPREADJS_BASE_URL" :onInited="onInitSpreadSheet">
+    <sz-form-previewer :modalWidth="modalWidth" ref="previewerRef" :isLandscape="sheetLandscape" :license-key="SPREADJS_LICENSE_KEY" :fieldsData="fieldsData" :debug-mode="debugMode" :base-url="SPREADJS_BASE_URL" :webBase="BASE_URL" :onInited="onInitSpreadSheet">
     </sz-form-previewer>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from '@/utils/constants';
+import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, BASE_URL} from '@/utils/constants';
 import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, requestParent} from "@/utils/iframe-io";
-import {EVENT_PREVIEWER_PARENT} from '@/utils/events/previewer'
+import {EVENT_PREVIEWER_PARENT, PROXYED_EVENT_PREVIEWER} from '@/utils/events/previewer'
 
 const previewerRef = ref<any>(null);
 
 const sheetLandscape = ref(false);
 const debugMode = ref(false);
 const showExtraToolbar = ref(false);
-const fieldItems= ref([]);
+const fieldsData= ref([]);
 const modalWidth = ref('calc(100% - 40px)');
 
 
@@ -51,10 +51,10 @@ const propsMap = {
             console.log('showExtraToolbar', val);
         }
     },
-    fieldItems: {
-        get: ()=>fieldItems.value,
+    fieldsData: {
+        get: ()=>fieldsData.value,
         set: (val: any) => {
-            fieldItems.value = val;
+            fieldsData.value = val;
         }
     },
     modelWidth: {
@@ -77,7 +77,7 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
     },
 
     ...initPropsGetterSetter(propsMap),
-    ...proxyFormApi(previewerRef, ['initWithFileJSON', 'setCellsInfo', 'getCellsInfo', 'getFileJSON', 'getFieldList', 'getSheetConfig'])
+    ...proxyFormApi(previewerRef, PROXYED_EVENT_PREVIEWER)
 })
 
 
@@ -88,8 +88,8 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
 // const onImportFormFromInstance = () => {
 //     requestParent(EVENT_PREVIEWER_PARENT.ImportFormFromInstance);
 // }
-// const onExtendFieldItems = () => {
-//     requestParent(EVENT_PREVIEWER_PARENT.ExtendFieldItems);
+// const onExtendfieldsData = () => {
+//     requestParent(EVENT_PREVIEWER_PARENT.ExtendfieldsData);
 // }
 
 onUnmounted(() => {
