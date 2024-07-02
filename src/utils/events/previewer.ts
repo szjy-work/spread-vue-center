@@ -8,3 +8,10 @@ export enum EVENT_PREVIEWER {
     SetCellsInfo = 'setCellsInfo',
     GetCellsInfo = 'getCellsInfo',
 }
+
+
+// 父 iframe 需要监听的事件类型
+export enum EVENT_PREVIEWER_PARENT {
+    Inited = 'inited', // 初始化完毕,
+}
+
