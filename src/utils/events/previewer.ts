@@ -1,10 +1,12 @@
 import { removeSubArrayElements } from "../array";
+import { COMMON_EVENT_NAMES } from "./common";
 
 // 自身监听的事件类型
 export enum EVENT_PREVIEWER {
     // 获取 props
     GetProps = 'getProps',
     SetProps = 'setProps',
+    ExecScript = 'execScript',
 
     InitWithFileJSON = 'initWithFileJSON', // 初始化时，传入文件中的 JSON 数据
     SetCellsInfo = 'setCellsInfo',
@@ -17,9 +19,10 @@ export enum EVENT_PREVIEWER {
     PrintSheet ='printSheet',
     ExportPDFBlob = 'exportPDFBlob',
     GetSpread = 'getSpread',
+    CopyToIndex = 'copyToIndex',
 }
 
-export const PROXYED_EVENT_PREVIEWER = removeSubArrayElements(Object.values(EVENT_PREVIEWER), ['getProps', 'setProps']);
+export const PROXYED_EVENT_PREVIEWER = removeSubArrayElements(Object.values(EVENT_PREVIEWER), COMMON_EVENT_NAMES);
 
 // 父 iframe 需要监听的事件类型
 export enum EVENT_PREVIEWER_PARENT {

@@ -1,6 +1,7 @@
 import { NS_SPREAD_CHILD, NS_SPREAD_PARENT } from "./constants"
 import { Capitalize } from '@/utils/string';
 import { EVENT_TYPE, EVENT_TYPE_PARENT, EVENT_NAMES } from './events'
+import { urlToBase64 } from './image'
 
 
 // 使用映射类型创建新的类型
@@ -148,6 +149,39 @@ export const initPropsGetterSetter = (propsMap: any) => {
                 success: true,
             });
         }
+    }
+}
+
+const AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
+export const initOnExecScript = (spreadVueRef: any) => {
+    return {
+        // 处理父元素的 'getProps' 消息
+        onExecScript: async (port: MessagePort, params: any) => {
+            const { args = [], keepOrigin } = params;
+            const scriptBody = args[0];
+
+            // 创建异步 fn
+            const fn = new AsyncFunction('spread, utils', scriptBody);
+            const spread = spreadVueRef.value.getSpread();
+            const utils = { urlToBase64};
+            const result = await fn(spread, utils);
+            try {
+                responseParent(port, {
+                    success: true,
+                    keepOrigin,
+                    args,
+                    result: result,
+                });
+            } catch (err) {
+                responseParent(port, {
+                    success: false,
+                    keepOrigin,
+                    args,
+                    msg: 'script exec with error occurred: ' + JSON.stringify(err),
+                });
+            }
+        },
+        
     }
 }
 

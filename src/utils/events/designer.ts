@@ -1,4 +1,5 @@
 import { removeSubArrayElements } from "../array";
+import { COMMON_EVENT_NAMES } from "./common";
 
 // 自身监听的事件类型
 export enum EVENT_DESIGNER {
@@ -7,6 +8,7 @@ export enum EVENT_DESIGNER {
     // 获取 props
     GetProps = 'getProps',
     SetProps = 'setProps',
+    ExecScript = 'execScript',
 
     InitWithFileJSON = 'initWithFileJSON', // 初始化时，传入文件中的 JSON 数据
     SetCellsInfo = 'setCellsInfo',
@@ -17,7 +19,7 @@ export enum EVENT_DESIGNER {
 }
 
 
-export const PROXYED_EVENT_DESIGNER = removeSubArrayElements(Object.values(EVENT_DESIGNER), ['hello', 'getProps', 'setProps']);
+export const PROXYED_EVENT_DESIGNER = removeSubArrayElements(Object.values(EVENT_DESIGNER), ['hello', ...COMMON_EVENT_NAMES]);
 
 
 // 父 iframe 需要监听的事件类型

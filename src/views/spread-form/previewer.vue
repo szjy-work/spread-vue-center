@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, BASE_URL} from '@/utils/constants';
-import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, requestParent} from "@/utils/iframe-io";
+import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, initOnExecScript, requestParent} from "@/utils/iframe-io";
 import {EVENT_PREVIEWER_PARENT, PROXYED_EVENT_PREVIEWER} from '@/utils/events/previewer'
 
 const previewerRef = ref<any>(null);
@@ -77,6 +77,7 @@ const onReceiveIframeMsg = initIframeMessageHandlers({
     },
 
     ...initPropsGetterSetter(propsMap),
+    ...initOnExecScript(previewerRef),
     ...proxyFormApi(previewerRef, PROXYED_EVENT_PREVIEWER)
 })
 

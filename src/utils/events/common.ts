@@ -1,0 +1,1 @@
+export const COMMON_EVENT_NAMES = ['getProps', 'setProps', 'execScript'];
