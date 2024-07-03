@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@szjy/excel-form':
-    specifier: ^0.2.2
-    version: 0.2.2(typescript@5.5.2)
+    specifier: 0.2.3
+    version: 0.2.3(typescript@5.5.2)
   naive-ui:
     specifier: ^2.38.2
     version: 2.38.2(vue@3.4.30)
@@ -1001,8 +1001,8 @@ packages:
       - '@types/node'
     dev: true
 
-  /@szjy/excel-form@0.2.2(typescript@5.5.2):
-    resolution: {integrity: sha512-0zPQq+IllbAoWtkQXie03vvT9h8MoC1bfV6ezcgjsG61smbTO4O2e2DGLLEuN1kKGHJdUpPqwDGuArNJqMiqPA==}
+  /@szjy/excel-form@0.2.3(typescript@5.5.2):
+    resolution: {integrity: sha512-XCeXlg1GnJPVttsCBmN3uPjPBQK+T18XoyiF/eIrw87CjUXBPkXPWNsss+uM3N+i95YNKS4VddoxVVcHl/gF4A==}
     dependencies:
       '@ant-design/icons-vue': 7.0.1(vue@3.4.30)
       aa-loader: 0.1.5
