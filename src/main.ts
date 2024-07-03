@@ -15,4 +15,5 @@ const szFormDesigner = createForm({
     ]
 });
 
+// @ts-ignore
 createApp(App).use(router).use(szFormDesigner).mount('#app')
