@@ -114,6 +114,8 @@ onUnmounted(() => {
 
 <style>
 .form-designer-wrapper{
+    width: 100%;
+    min-width: 600px;
     height: 100%;
     background-color: white;
 }
