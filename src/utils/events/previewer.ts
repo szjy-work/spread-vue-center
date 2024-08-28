@@ -20,6 +20,9 @@ export enum EVENT_PREVIEWER {
     ExportPDFBlob = 'exportPDFBlob',
     GetSpread = 'getSpread',
     CopyToIndex = 'copyToIndex',
+    InsertImageToSheet = 'insertImageToSheet',
+    GetShapesInfo = 'getShapesInfo',
+    InsertShapes = 'insertShapes',
 }
 
 export const PROXYED_EVENT_PREVIEWER = removeSubArrayElements(Object.values(EVENT_PREVIEWER), COMMON_EVENT_NAMES);

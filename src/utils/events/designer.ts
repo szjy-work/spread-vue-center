@@ -16,6 +16,9 @@ export enum EVENT_DESIGNER {
     GetFileJSON = 'getFileJSON',
     GetFieldList = 'getFieldList',
     GetSheetConfig = 'getSheetConfig',
+    InsertImageToSheet = 'insertImageToSheet',
+    GetShapesInfo = 'getShapesInfo',
+    InsertShapes = 'insertShapes',
 }
 
 
