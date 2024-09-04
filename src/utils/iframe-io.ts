@@ -163,7 +163,7 @@ export const initOnExecScript = (spreadVueRef: any) => {
             // 创建异步 fn
             const fn = new AsyncFunction('spread, utils', scriptBody);
             const spread = spreadVueRef.value.getSpread();
-            const utils = { urlToBase64};
+            const utils = { urlToBase64 };
             const result = await fn(spread, utils);
             try {
                 responseParent(port, {

@@ -19,6 +19,7 @@ export enum EVENT_DESIGNER {
     InsertImageToSheet = 'insertImageToSheet',
     GetShapesInfo = 'getShapesInfo',
     InsertShapes = 'insertShapes',
+    GetCellPosKeys = 'getCellPosKeys',
 }
 
 
@@ -33,5 +34,6 @@ export enum EVENT_DESIGNER_PARENT {
     ImportFormFromTpl = 'importFormFromTpl', // 从模板导入表单
     ImportFormFromInstance = 'importFormFromInstance', // 从实例中导入案例
     ExtendFieldItems = 'extendFieldItems', // 扩展字段项
+    OpenFullDesigner = 'openFullDesigner', // 打开全量设计器
 }
 

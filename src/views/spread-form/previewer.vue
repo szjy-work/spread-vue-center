@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, BASE_URL} from '@/utils/constants';
+import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, BASE_URL, COMPONENT_TYPE} from '@/utils/constants';
 import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, initOnExecScript, requestParent} from "@/utils/iframe-io";
 import {EVENT_PREVIEWER_PARENT, PROXYED_EVENT_PREVIEWER} from '@/utils/events/previewer'
 
@@ -25,7 +25,7 @@ onMounted(() => {
 
 // 初始化完毕之后，通知父组件 spreadjs 已经初始化完成
 const onInitSpreadSheet = () => {
-    requestParent(EVENT_PREVIEWER_PARENT.Inited).then(res=>{
+    requestParent(EVENT_PREVIEWER_PARENT.Inited, {componentType: COMPONENT_TYPE.PREVIEWER}).then(res=>{
         console.log('get parent inited handle response', res);
     });
 }

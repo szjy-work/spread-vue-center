@@ -12,7 +12,7 @@
     "preview:apifox": "vite preview --mode apifox"
   },
   "dependencies": {
-    "@szjy/excel-form": "0.2.6",
+    "@szjy/excel-form": "0.3.0",
     "naive-ui": "^2.38.2",
     "vue": "^3.4.29",
     "vue-router": "^4.4.0"

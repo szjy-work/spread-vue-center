@@ -9,6 +9,7 @@ export enum EVENT_PREVIEWER {
     ExecScript = 'execScript',
 
     InitWithFileJSON = 'initWithFileJSON', // 初始化时，传入文件中的 JSON 数据
+    GetFileJSON = 'getFileJSON',
     SetCellsInfo = 'setCellsInfo',
     GetCellsInfo = 'getCellsInfo',
     GetCellsData = 'getCellsData',
@@ -23,6 +24,7 @@ export enum EVENT_PREVIEWER {
     InsertImageToSheet = 'insertImageToSheet',
     GetShapesInfo = 'getShapesInfo',
     InsertShapes = 'insertShapes',
+    GetCellPosKeys = 'getCellPosKeys',
 }
 
 export const PROXYED_EVENT_PREVIEWER = removeSubArrayElements(Object.values(EVENT_PREVIEWER), COMMON_EVENT_NAMES);

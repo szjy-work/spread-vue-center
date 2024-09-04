@@ -19,6 +19,15 @@
                 <n-button size="small" @click="onExtendFieldItems">扩展字段配置</n-button>
                 </n-space>
             </n-popover>
+
+            <n-popover v-if="showExtraToolbar" placement="bottom" trigger="hover">
+                <template #trigger>
+                <n-button size="small" style="margin-left: 10px;">编辑</n-button>
+                </template>
+                <n-space vertical>
+                <n-button size="small" @click="onOpenFullDesigner">开启设计器</n-button>
+                </n-space>
+            </n-popover>
         </template>
     </sz-form-designer>
 </template>
@@ -26,7 +35,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
 import { EXCELFORM_SLOT_NAMES } from '@szjy/excel-form';
-import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL} from '@/utils/constants';
+import {SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, COMPONENT_TYPE} from '@/utils/constants';
 import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, initOnExecScript, requestParent} from "@/utils/iframe-io";
 import {EVENT_DESIGNER_PARENT, PROXYED_EVENT_DESIGNER} from '@/utils/events/designer'
 
@@ -45,7 +54,7 @@ onMounted(() => {
 
 // 初始化完毕之后，通知父组件 spreadjs 已经初始化完成
 const onInitSpreadSheet = () => {
-    requestParent(EVENT_DESIGNER_PARENT.Inited).then(res=>{
+    requestParent(EVENT_DESIGNER_PARENT.Inited, {componentType: COMPONENT_TYPE.DESIGNER}).then(res=>{
         console.log('get parent inited handle response', res);
     });
 }
@@ -105,6 +114,9 @@ const onImportFormFromInstance = () => {
 }
 const onExtendFieldItems = () => {
     requestParent(EVENT_DESIGNER_PARENT.ExtendFieldItems);
+}
+const onOpenFullDesigner = () => {
+    requestParent(EVENT_DESIGNER_PARENT.OpenFullDesigner);
 }
 
 onUnmounted(() => {
