@@ -1,12 +1,12 @@
 <template>
-    <sz-full-designer ref="fullDesignerRef" :license-key="SPREADJS_DESIGNER_LICENSE_KEY" :debug-mode="debugMode" :show-opt-area="showOptArea" :base-url="SPREADJS_BASE_URL" :onInited="onFullDesignerInit" :wrapStyle="wrapStyle" :forceReset="forceReset">
+    <sz-full-designer ref="fullDesignerRef" :license-key="SPREADJS_LICENSE_KEY" :designerLicenseKey="SPREADJS_DESIGNER_LICENSE_KEY" :debug-mode="debugMode" :show-opt-area="showOptArea" :base-url="SPREADJS_BASE_URL" :onInited="onFullDesignerInit" :wrapStyle="wrapStyle" :forceReset="forceReset">
     </sz-full-designer>
 </template>
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import {SPREADJS_DESIGNER_LICENSE_KEY, SPREADJS_BASE_URL, COMPONENT_TYPE} from '@/utils/constants';
-import { initIframeMessageHandlers, responseParent, proxyFormApi, initPropsGetterSetter, initOnExecScript, requestParent} from "@/utils/iframe-io";
+import {SPREADJS_DESIGNER_LICENSE_KEY, SPREADJS_LICENSE_KEY, SPREADJS_BASE_URL, COMPONENT_TYPE} from '@/utils/constants';
+import { initIframeMessageHandlers, proxyFormApi, initPropsGetterSetter, initOnExecScript, requestParent} from "@/utils/iframe-io";
 import {EVENT_FULL_DESIGNER_PARENT, PROXYED_EVENT_FULL_DESIGNER} from '@/utils/events/full-designer'
 
 const fullDesignerRef = ref<any>(null);
